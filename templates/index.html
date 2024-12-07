@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face Lock System</title>
+    <style>
+      body {
+        font-family: "Roboto", Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(145deg, #0f0f0f, #000000);
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      h1 {
+        font-size: 36px;
+        text-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        margin-bottom: 20px;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #start-btn {
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, #555, #222);
+        border: 8px solid #333;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        line-height: 150px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8),
+          inset 0 5px 10px rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+        }
+        50% {
+          transform: scale(1.1);
+          box-shadow: 0 15px 30px rgba(255, 255, 255, 0.3);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+        }
+      }
+
+      #start-btn:hover {
+        background: radial-gradient(circle, #666, #333);
+        transform: scale(1.2);
+      }
+
+      #verification-status {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 15px;
+        color: #ffa500;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        animation: statusBlink 1s infinite alternate;
+      }
+
+      @keyframes statusBlink {
+        from {
+          opacity: 0.8;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      #video-feed-container {
+        width: 90%;
+        max-width: 900px;
+        aspect-ratio: 16 / 9;
+        margin-top: 20px;
+        border: 10px solid #333;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+        background: linear-gradient(145deg, #222, #000);
+        display: none;
+        position: relative;
+      }
+
+      #video-feed {
+        width: 100%;
+        height: 100%;
+        filter: grayscale(40%);
+      }
+
+      #status-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 30px;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+        padding: 15px 30px;
+        border-radius: 10px;
+        display: none;
+      }
+
+      .success {
+        color: #00ff00;
+        text-shadow: 0 0 20px #00ff00;
+        background-color: rgba(0, 255, 0, 0.1);
+        animation: glow 1.5s infinite alternate;
+      }
+
+      .error {
+        color: #ff0000;
+        text-shadow: 0 0 20px #ff0000;
+        background-color: rgba(255, 0, 0, 0.1);
+      }
+
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+        to {
+          box-shadow: 0 0 30px rgba(0, 255, 0, 1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Smart Car Face Lock System</h1>
+    <button id="start-btn" onclick="startVerification()">Start</button>
+    <div id="verification-status">Press Start to Begin</div>
+    <div id="video-feed-container">
+      <img id="video-feed" src="" alt="Video Feed" />
+      <div id="status-message" class="status-message"></div>
+    </div>
+    <script>
+      function startVerification() {
+        const startButton = document.getElementById("start-btn");
+        startButton.style.display = "none";
+
+        const statusMessage = document.getElementById("verification-status");
+        statusMessage.innerHTML = "Verification in Progress...";
+
+        const videoFeedContainer = document.getElementById(
+          "video-feed-container"
+        );
+        const videoFeed = document.getElementById("video-feed");
+
+        videoFeedContainer.style.display = "block";
+        videoFeed.src = "/video_feed";
+
+        setInterval(fetchDetectionResult, 500);
+      }
+
+      function fetchDetectionResult() {
+        fetch("/detection_result")
+          .then((response) => response.json())
+          .then((data) => {
+            const detectedName = data.name;
+            const statusMessage = document.getElementById("status-message");
+
+            if (detectedName !== "Unknown") {
+              statusMessage.style.display = "block";
+              statusMessage.innerHTML = "Vehicle Ready to Go!";
+              statusMessage.className = "success status-message";
+              setTimeout(() => (window.location.href = "/success"), 2000);
+            } else {
+              statusMessage.style.display = "block";
+              statusMessage.innerHTML = "Access Denied";
+              statusMessage.className = "error status-message";
+            }
+          })
+          .catch((error) => console.error(error));
+      }
+    </script>
+  </body>
+</html>
