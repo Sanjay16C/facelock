@@ -51,20 +51,19 @@ The project consists of three main steps: Collecting images, Training face embed
 	Start the Flask web application:
  	•	Opens a web interface for face authentication.
 	•	Matches live webcam input against stored face embeddings.
-
- 	 
+ 
  	python app.py
 
 **📂 Folder Structure**
-
-FACEID/
-	│── dataset/              	# Stores images of known faces
-	│── templates/            	# HTML templates for the web interface
-	│── script.py             	# Collects face images
-	│── embeddingtrain.py     	# Converts images into trained embeddings
-	│── app.py                	# Runs Flask application
-	│── requirements.txt      	# Project dependencies
-	│── README.md             	# Documentation
+	
+	FACEID/
+	│── dataset/            # Stores images of known faces
+	│── templates/          # HTML templates for the web interface
+	│── script.py           # Collects face images
+	│── embeddingtrain.py   # Converts images into trained embeddings
+	│── app.py              # Runs Flask application
+	│── requirements.txt    # Project dependencies
+	│── README.md           # Documentation
 
 **📝 License**
-MIT License © 2025 Sanjay Chandrasekar
+MIT License © 2025 Sanjay16C
