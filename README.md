@@ -58,15 +58,13 @@ The project consists of three main steps: Collecting images, Training face embed
 **📂 Folder Structure**
 
 FACEID/
-│── dataset/              # Stores images of known faces
-│── models/               # Stores trained embeddings (.pkl)
-│── templates/            # HTML templates for the web interface
-│── static/               # CSS styles and frontend assets
-│── script.py             # Collects face images
-│── embeddingtrain.py     # Converts images into trained embeddings
-│── app.py                # Runs Flask application
-│── requirements.txt      # Project dependencies
-│── README.md             # Documentation
+	│── dataset/              	# Stores images of known faces
+	│── templates/            	# HTML templates for the web interface
+	│── script.py             	# Collects face images
+	│── embeddingtrain.py     	# Converts images into trained embeddings
+	│── app.py                	# Runs Flask application
+	│── requirements.txt      	# Project dependencies
+	│── README.md             	# Documentation
 
 **📝 License**
 MIT License © 2025 Sanjay Chandrasekar
