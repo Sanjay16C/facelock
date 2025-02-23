@@ -15,7 +15,7 @@ Follow these steps to set up and run the project on your system.
 
 1️⃣ Clone the Repository
 
-	git clone https://github.com/yourusername/FACEID.git
+	git clone https://github.com/Sanjay16C/facelock.git
 	cd FACEID
 
 2️⃣ Create a Virtual Environment
